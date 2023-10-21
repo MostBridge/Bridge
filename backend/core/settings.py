@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -9,11 +10,11 @@ env = environ.Env()
 if DEBUG := env.bool("DEBUG", default=True):
     environ.Env.read_env(find_dotenv(".env"))
 
-DEFAULT = 'some_default_key'
+DEFAULT = "some_default_key"
 
-SECRET_KEY = env.str('SECRET_KEY', default=DEFAULT)
+SECRET_KEY = env.str("SECRET_KEY", default=DEFAULT)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['*'])
 
 
 DEFAULT_APPS = [
@@ -25,9 +26,17 @@ DEFAULT_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "api",
+    "candidate",
+    "users",
+]
 
-EXTERNAL_APPS = []
+EXTERNAL_APPS = [
+    "drf_yasg",
+    "rest_framework",
+    "djoser",
+]
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + EXTERNAL_APPS
 
@@ -89,7 +98,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+   "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+   "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
