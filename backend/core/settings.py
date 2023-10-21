@@ -16,7 +16,6 @@ SECRET_KEY = env.str("SECRET_KEY", default=DEFAULT)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['*'])
 
-
 DEFAULT_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -70,10 +69,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
 DATABASES = {
     "default": {
-        "ENGINE": env.str("POSTGRES_ENGINE", default='django.db.backends.postgresql'),
+        "ENGINE": env.str("POSTGRES_ENGINE",
+                          default='django.db.backends.postgresql'),
         "NAME": env.str("POSTGRES_NAME", default='postgres'),
         "USER": env.str("POSTGRES_USER", default='postgres'),
         "PASSWORD": env.str("POSTGRES_PASSWORD", default='postgres'),
@@ -81,7 +80,6 @@ DATABASES = {
         "PORT": env.str("POSTGRES_PORT", default='5432'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,7 +96,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -109,9 +106,33 @@ REST_FRAMEWORK = {
     ],
 }
 
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': True,
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserRegistrationSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    },
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.IsAdminUser'],
+    }
+}
+
 SIMPLE_JWT = {
-   "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-   "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
 
 LANGUAGE_CODE = "ru"
