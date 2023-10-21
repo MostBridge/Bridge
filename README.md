@@ -183,17 +183,12 @@ poetry update
 cd backend/
 
 # Запустить веб-сервер командой
-poetry run uvicorn config.asgi:application --reload
+poetry run gunicorn config.asgi:application --reload
 ```
 
 запуск бота с контейнером PostgreSQL:
 ```shell
 make runbot-db
-```
-
-запуск контейнера с PostgreSQL:
-```shell
-make rundb
 ```
 
 остановка контейнера с PostgreSQL:

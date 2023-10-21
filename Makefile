@@ -39,6 +39,9 @@ clear-db: # Очистка БД Postgres
 migrate: # Выполнение миграций Django
 	poetry run python backend/manage.py migrate
 
+createsuperuser: # Создать супер пользователя
+	poetry run python backend/manage.py createsuperuser --noinput
+
 run-service: # Запуск Django
 	@echo -e "$(COLOR_YELLOW)Starting service...$(COLOR_RESET)"
 	@cd backend && poetry run gunicorn --bind 0:8000 core.asgi:application --reload && cd .. && \
