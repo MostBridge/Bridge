@@ -1,16 +1,10 @@
+from enum import StrEnum
+
+from django.contrib.auth import get_user_model
+from django.core.validators import RegexValidator
 from django.db import models
 
-
-class Candidate(models.Model):
-    """Модель кандидатов."""
-
-    pass
-
-
-class Favorite(models.Model):
-    """Модель избранных кандидатов."""
-
-    pass
+User = get_user_model()
 
 
 class Technology(models.Model):
@@ -53,14 +47,140 @@ class Profession(models.Model):
 class Town(models.Model):
     """Модель городов."""
 
-    name = models.CharField(
-        verbose_name="Название города", max_length=50, unique=True
+    region = models.CharField(verbose_name="Область, регион", max_length=50)
+    city = models.CharField(verbose_name="Название города", max_length=50)
+    district = models.CharField(verbose_name="Округ", max_length=50)
+
+    class Meta:
+        verbose_name = "Город"
+        verbose_name_plural = "Города"
+        ordering = ("city",)
+
+    def __str__(self) -> str:
+        return self.city
+
+
+class Candidate(models.Model):
+    """Модель кандидатов."""
+
+    class GradeName(StrEnum):
+        """Enum grade."""
+
+        junior = "Junior"
+        middle = "Middle"
+
+        @classmethod
+        def choices(cls):
+            """Choices method."""
+            return [(item.value, item.name) for item in cls]
+
+    profession = models.ForeignKey(
+        Profession,
+        verbose_name="Профессия",
+        on_delete=models.DO_NOTHING,
+        related_name="candidate",
+        blank=False,
+        default=None,
+    )
+
+    grade = models.CharField(
+        "Грейд",
+        max_length=16,
+        choices=GradeName.choices(),
+        default=GradeName.junior,
+    )
+
+    town = models.ForeignKey(
+        Town,
+        verbose_name="Город",
+        on_delete=models.DO_NOTHING,
+        related_name="candidates",
+        blank=False,
+        default=None,
     )
 
     class Meta:
-        verbose_name = "Town"
-        verbose_name_plural = "Towns"
-        ordering = ("name",)
+        verbose_name = "Кандидат"
+        verbose_name_plural = "Кандидаты"
 
-    def __str__(self) -> str:
-        return self.name
+
+class Contact(models.Model):
+    """Модель контактов кандидата."""
+
+    candidate = models.OneToOneField(
+        Candidate,
+        on_delete=models.CASCADE,
+        verbose_name="Контакты",
+        related_name="contacts",
+    )
+    phone_number = models.CharField(
+        "телефон",
+        validators=[
+            RegexValidator(r"^(8|\+7)[\- ]?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$")
+        ],
+        max_length=50,
+        blank=True,
+    )
+
+    email = models.EmailField(
+        "email", unique=True, max_length=254, blank=False
+    )
+    telegram = models.CharField(
+        "telegram",
+        unique=True,
+        max_length=254,
+        blank=True,
+        validators=[RegexValidator(r"^@\w{5,32}$")],
+    )
+
+    class Meta:
+        verbose_name = "Контакт"
+        verbose_name_plural = "Контакты"
+
+
+class View(models.Model):
+    """Модель просмотра профиля кандидата."""
+
+    candidate = models.ForeignKey(
+        Candidate,
+        on_delete=models.CASCADE,
+        verbose_name="Кандидат",
+        related_name="viewed",
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="viewed",
+    )
+
+    class Meta:
+        verbose_name = "Просмотренный кандидат"
+        verbose_name_plural = "Просмотренные кандидаты"
+
+    def __str__(self):
+        return f"{self.user_id} - {self.candidate_id}"
+
+
+class Favorite(models.Model):
+    """Модель избранных кандидатов."""
+
+    candidate = models.ForeignKey(
+        Candidate,
+        on_delete=models.CASCADE,
+        verbose_name="Кандидат",
+        related_name="favorite",
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="favorite",
+    )
+
+    class Meta:
+        verbose_name = "Избранный кандидат"
+        verbose_name_plural = "Избранные кандидаты"
+
+    def __str__(self):
+        return f"{self.user_id} - {self.candidate_id}"
