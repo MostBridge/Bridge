@@ -1,14 +1,14 @@
 from django.contrib import admin
 
-from candidate.models import Profession, Technology, Town
+from candidate.models import Candidate, Contact, Profession, Technology, Town
 
 
 @admin.register(Town)
 class TownAdmin(admin.ModelAdmin):
     """Управление городами."""
 
-    list_display = ("name",)
-    search_fields = ("id",)
+    list_display = ("region", "city", "district")
+    search_fields = ("city",)
 
 
 @admin.register(Technology)
@@ -25,3 +25,20 @@ class ProfessionAdmin(admin.ModelAdmin):
 
     list_display = ("name",)
     search_fields = ("id",)
+
+
+class ContactInline(admin.TabularInline):
+    """Управление контактами."""
+
+    model = Contact
+
+
+@admin.register(Candidate)
+class CandidateAdmin(admin.ModelAdmin):
+    """Управление кандидатами."""
+
+    list_display = (
+        "contacts",
+        "town",
+    )
+    inlines = [ContactInline]
