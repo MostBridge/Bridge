@@ -13,7 +13,7 @@ class TechnologySerializer(serializers.ModelSerializer):
 
 
 class TownSerializer(serializers.ModelSerializer):
-    """Сериализатор тэгов."""
+    """Сериализатор города."""
 
     class Meta:
         model = Town

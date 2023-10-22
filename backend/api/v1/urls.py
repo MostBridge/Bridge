@@ -19,6 +19,7 @@ router_v1.register("profession", ProfessionViewSet, basename="profession")
 router_v1.register("candidates", CandidateViewSet, basename="candidates")
 router_v1.register("users", MyUsersViewSet, basename="users")
 
+
 urlpatterns = [
     path("", include(router_v1.urls)),
     path("", include("djoser.urls.base")),
