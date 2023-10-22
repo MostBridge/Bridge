@@ -1,34 +1,42 @@
 from djoser.views import UserViewSet
+from rest_framework import viewsets
 
 from api.v1.serializers import (
+    CandidateSerializer,
     ProfessionSerializer,
     TechnologySerializer,
     TownSerializer,
 )
-from api.v1.mixins import ListViewSet
-from candidate.models import Profession, Technology, Town
+from candidate.models import Candidate, Profession, Technology, Town
 
 
 class MyUsersViewSet(UserViewSet):
     """Вьюсет пользователя."""
 
 
-class TechnologyViewSet(ListViewSet):
+class TechnologyViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет пользователя."""
 
     queryset = Technology.objects.all()
     serializer_class = TechnologySerializer
 
 
-class TownViewSet(ListViewSet):
-    """Вьюсет города."""
+class TownViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вьюсет городов России по регионам."""
 
     queryset = Town.objects.all()
     serializer_class = TownSerializer
 
 
-class ProfessionViewSet(ListViewSet):
+class ProfessionViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет професии."""
 
     queryset = Profession.objects.all()
     serializer_class = ProfessionSerializer
+
+
+class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
+    """Класс кандидатов."""
+
+    queryset = Candidate.objects.all()
+    serializer_class = CandidateSerializer

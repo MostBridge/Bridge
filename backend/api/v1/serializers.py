@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from candidate.models import Profession, Technology, Town
+from candidate.models import Candidate, Profession, Technology, Town
 
 
 class TechnologySerializer(serializers.ModelSerializer):
@@ -13,12 +13,22 @@ class TechnologySerializer(serializers.ModelSerializer):
 
 
 class TownSerializer(serializers.ModelSerializer):
-    """Сериализация для города."""
+    """Сериализатор города."""
 
     class Meta:
         model = Town
-        fields = ("id", "name")
-        read_only_fields = ("name",)
+        fields = (
+            "id",
+            "region",
+            "city",
+            "district",
+        )
+        read_only_fields = (
+            "id",
+            "region",
+            "city",
+            "district",
+        )
 
 
 class ProfessionSerializer(serializers.ModelSerializer):
@@ -28,3 +38,20 @@ class ProfessionSerializer(serializers.ModelSerializer):
         model = Profession
         fields = ("id", "name")
         read_only_fields = ("name",)
+
+
+class CandidateSerializer(serializers.ModelSerializer):
+    """Сериализатор кандидатов."""
+
+    class Meta:
+        model = Candidate
+        fields = (
+            "id",
+            "contacts",
+            "town",
+        )
+        read_only_fields = (
+            "id",
+            "contacts",
+            "town",
+        )
