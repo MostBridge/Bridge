@@ -1,5 +1,6 @@
-from candidate.models import Profession, Technology, Town
 from rest_framework import serializers
+
+from candidate.models import Profession, Technology, Town
 
 
 class TechnologySerializer(serializers.ModelSerializer):
