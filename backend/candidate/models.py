@@ -47,9 +47,15 @@ class Profession(models.Model):
 class Town(models.Model):
     """Модель городов."""
 
-    region = models.CharField(verbose_name="Область, регион", max_length=50)
-    city = models.CharField(verbose_name="Название города", max_length=50)
-    district = models.CharField(verbose_name="Округ", max_length=50)
+    region = models.CharField(
+        verbose_name="Область, регион", max_length=50, null=True, blank=True
+    )
+    city = models.CharField(
+        verbose_name="Название города", max_length=50, unique=True
+    )
+    district = models.CharField(
+        verbose_name="Округ", max_length=50, null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Город"

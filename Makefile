@@ -51,3 +51,9 @@ service: # Запуск Django пока без gunicorn
 	@echo -e "$(COLOR_YELLOW)Starting service...$(COLOR_RESET)"
 	@cd backend && poetry run python manage.py runserver && cd .. && \
 	echo -e "$(COLOR_GREEN)Service stopped$(COLOR_RESET)"
+
+create-profession: # Команда для создания профессий
+	poetry run python backend/manage.py create_profession --amount ${amount}
+
+create-contact: # Команда для создания контакта
+	poetry run python backend/manage.py create_contacts --amount ${amount}
