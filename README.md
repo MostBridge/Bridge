@@ -226,7 +226,7 @@ make filldb
    sudo docker-compose -f docker-compose.stage.yaml up
    ```
 
-# 4 Cтэк технологий <a id="host"></a>
+# 4 Cтэк технологий <a id="stack"></a>
 
 [![Python](https://img.shields.io/badge/-Python-464641?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-464646?style=flat-square&logo=django)](https://www.djangoproject.com/)
