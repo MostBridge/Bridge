@@ -112,7 +112,7 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': True,
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',
     'SERIALIZERS': {
         'user_create': 'users.serializers.UserRegistrationSerializer',
         'user': 'users.serializers.UserSerializer',
@@ -130,8 +130,8 @@ EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.yandex.ru")
 EMAIL_PORT = env.str("EMAIL_PORT", default="465")
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="email_username")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="email_password")
-EMAIL_USE_TLS = env.str("EMAIL_USE_TLS", default=False)
 EMAIL_USE_SSL = env.str("EMAIL_USE_SSL", default=True)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
@@ -141,7 +141,7 @@ SIMPLE_JWT = {
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
-        'Token': {
+        'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
