@@ -14,6 +14,11 @@ class User(AbstractUser):
         verbose_name="Адрес электронной почты", unique=True, max_length=254
     )
 
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = [
+        "username",
+    ]
+
     class Meta:
         ordering = ("id",)
         verbose_name = "User"

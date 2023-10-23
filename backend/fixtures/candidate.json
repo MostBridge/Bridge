@@ -1,0 +1,1 @@
+[{"model": "candidate.candidate", "pk": 1, "fields": {"profession": 1, "grade": "Junior", "town": 964}}, {"model": "candidate.candidate", "pk": 2, "fields": {"profession": 2, "grade": "Middle", "town": 507}}, {"model": "candidate.candidate", "pk": 3, "fields": {"profession": 3, "grade": "Junior", "town": 1014}}]

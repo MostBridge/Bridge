@@ -111,6 +111,8 @@ REST_FRAMEWORK = {
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': True,
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SERIALIZERS': {
         'user_create': 'users.serializers.UserRegistrationSerializer',
         'user': 'users.serializers.UserSerializer',
@@ -120,6 +122,16 @@ DJOSER = {
         'user_list': ['rest_framework.permissions.IsAdminUser'],
     }
 }
+
+# EMAIL CONFIG
+EMAIL_BACKEND = env.str("EMAIL_BACKEND",
+                        default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.yandex.ru")
+EMAIL_PORT = env.str("EMAIL_PORT", default="465")
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="email_username")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="email_password")
+EMAIL_USE_TLS = env.str("EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL = env.str("EMAIL_USE_SSL", default=True)
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),

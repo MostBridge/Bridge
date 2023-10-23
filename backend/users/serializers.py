@@ -38,8 +38,6 @@ class UserRegistrationSerializer(UserCreateSerializer):
             "id",
             "email",
             "username",
-            "first_name",
-            "last_name",
             "password",
         )
         read_only_fields = ("id",)
