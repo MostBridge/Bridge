@@ -1,5 +1,8 @@
+import requests
 from djoser.views import UserViewSet
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api.v1.serializers import (
     CandidateSerializer,
@@ -8,6 +11,20 @@ from api.v1.serializers import (
     TownSerializer,
 )
 from candidate.models import Candidate, Profession, Technology, Town
+
+
+class UserActivationView(APIView):
+    """Обработка данных для активации юзера."""
+
+    @staticmethod
+    def get(request, uid, token):
+        """Формирование POST-запроса активации юзера."""
+        protocol = "https://" if request.is_secure() else "http://"
+        post_url = f"{protocol}{request.get_host()}/api/v1/users/activation/"
+        post_data = {"uid": uid, "token": token}
+        result = requests.post(post_url, data=post_data)
+        content = result.text
+        return Response(content)
 
 
 class MyUsersViewSet(UserViewSet):
