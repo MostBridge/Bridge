@@ -18,7 +18,6 @@ Bridge service for the Yandex Practicum, Career Tracker
 
     3.5. [Запуск в Docker](#run-docker)
 4. [Cтэк технологий](#stack)
-5. [Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались](#)
 
 
 # 1. Cведения о команде: <a id="info"></a>
