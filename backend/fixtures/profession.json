@@ -1,0 +1,1 @@
+[{"model": "candidate.profession", "pk": 1, "fields": {"name": "Разработчик"}}, {"model": "candidate.profession", "pk": 2, "fields": {"name": "Дизайн"}}, {"model": "candidate.profession", "pk": 3, "fields": {"name": "Тестировщик"}}]
