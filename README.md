@@ -22,8 +22,10 @@ Bridge service for the Yandex Practicum, Career Tracker
 
 
 # 1. Cведения о команде: <a id="info"></a>
-Разработчик [Сластухин Александр ](https://github.com/last-ui)
-Разработчик и Тимлид [Ярослав Андреев ](https://github.com/D4rkLght)
+
+1. Разработчик [Сластухин Александр ](https://github.com/last-ui)
+
+2. Разработчик и Тимлид [Ярослав Андреев ](https://github.com/D4rkLght)
 
 # 2. Cсылка на веб хостинг <a id="host"></a>
 
