@@ -1,11 +1,11 @@
 # Bridge
 Bridge service for the Yandex Practicum, Career Tracker
 
+
 # Содержание
 
-
-1. [Cведения о команде](#)
-2. [Cсылка на Github Pages или иной веб хостинг (если приложение опубликовано)](#)
+1. [Cведения о команде](#info)
+2. [Cсылка на веб хостинг](#host)
 3. [Подготовка к запуску](#start)
 
     3.1. [Правила работы с git](#git)
@@ -17,8 +17,16 @@ Bridge service for the Yandex Practicum, Career Tracker
     3.4. [Настройка переменных окружения](#env)
 
     3.5. [Запуск в Docker](#run-docker)
-4. [Cтэк технологий](#)
-5. [Cсылки на сторонние фреймворки, библиотеки, иконки и шрифты если использовались](#)
+4. [Cтэк технологий](#stack)
+
+
+# 1. Cведения о команде: <a id="info"></a>
+
+1. Разработчик [Сластухин Александр ](https://github.com/last-ui)
+
+2. Разработчик и Тимлид [Ярослав Андреев ](https://github.com/D4rkLght)
+
+# 2. Cсылка на веб хостинг <a id="host"></a>
 
 <br><br>
 
@@ -216,3 +224,17 @@ make filldb
    ```shell
    sudo docker-compose -f docker-compose.stage.yaml up
    ```
+
+# 4 Cтэк технологий <a id="stack"></a>
+
+[![Python](https://img.shields.io/badge/-Python-464641?style=flat-square&logo=Python)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-464646?style=flat-square&logo=django)](https://www.djangoproject.com/)
+[![Pytest](https://img.shields.io/badge/Pytest-464646?style=flat-square&logo=pytest)](https://docs.pytest.org/en/6.2.x/)
+[![Docker](https://img.shields.io/badge/Docker-464646?style=flat-square&logo=docker)](https://hub.docker.com/)
+[![Postgresql](https://img.shields.io/badge/Postgres-464646?style=flat-square&logo=POSTGRESQL)](https://www.postgresql.org/)
+[![Poetry](https://img.shields.io/badge/Poetry-464646?style=flat-square&logo=Poetry)](https://python-poetry.org/)
+[![Ruff](https://img.shields.io/badge/Ruff-464646?style=flat-square&logo=Ruff)](https://docs.astral.sh/ruff/)
+[![Pre-commit](https://img.shields.io/badge/Pre-commit-464646?style=flat-square&logo=Pre-commit)](https://pre-commit.com/)
+[![Gunicorn](https://img.shields.io/badge/Gunicorn-464646?style=flat-square&logo=Gunicorn)](https://gunicorn.org/)
+[![Nginx](https://img.shields.io/badge/Nginx-464646?style=flat-square&logo=Nginx)](https://nginx.org/ru/)
+[![Swagger](https://img.shields.io/badge/Swagger-464646?style=flat-square&logo=swagger)](https://swagger.io/)
