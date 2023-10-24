@@ -5,6 +5,7 @@ from candidate.models import (
     Candidate,
     Contact,
     Employment,
+    Favorite,
     Profession,
     Technology,
     Town,
@@ -92,6 +93,13 @@ class CandidateSerializer(serializers.ModelSerializer):
     profession = ProfessionSerializer()
     employment = EmploymentSerializer(many=True)
     photo = Base64ImageField()
+    is_favorited = serializers.SerializerMethodField()
+
+    def get_is_favorited(self, obj):
+        """Метод получения избранных кандидатов."""
+        current_user = self.context["request"].user
+        return obj.favorite.filter(user=current_user).exists()
+
 
     class Meta:
         model = Candidate
@@ -103,6 +111,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "grade",
             "employment",
             "photo",
+            "is_favorited",
         )
         read_only_fields = (
             "id",
@@ -112,4 +121,39 @@ class CandidateSerializer(serializers.ModelSerializer):
             "grade",
             "employment",
             "photo",
+            "is_favorited",
+
         )
+
+
+class CandidateShortSerializer(CandidateSerializer):
+    """Укороченный сериализатор кандидата."""
+
+    class Meta(CandidateSerializer.Meta):
+        fields = ("id",)
+        read_only_fields = ("id",)
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    """Сериализатор добавления в избранное."""
+
+    class Meta:
+        model = Favorite
+        fields = ("candidate", "user")
+
+    def validate(self, attrs):
+        """Валидация избранных кандидатов."""
+        candidate = attrs.get("candidate")
+        method = self.context.get("method")
+        current_user = attrs.get("user")
+        if method == "POST":
+            if candidate.favorite.filter(user=current_user).exists():
+                raise serializers.ValidationError(
+                    {"errors": "Кандидат уже в избранном!"}
+                )
+        elif method == "DELETE":
+            if not candidate.favorite.filter(user=current_user).exists():
+                raise serializers.ValidationError(
+                    {"errors": "Кандидата нет в избранном!"}
+                )
+        return attrs

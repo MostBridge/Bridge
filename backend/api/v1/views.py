@@ -1,12 +1,16 @@
 import requests
+from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from rest_framework import viewsets
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.v1.serializers import (
     CandidateSerializer,
+    CandidateShortSerializer,
     EmploymentSerializer,
+    FavoriteSerializer,
     ProfessionSerializer,
     TechnologySerializer,
     TownSerializer,
@@ -14,6 +18,7 @@ from api.v1.serializers import (
 from candidate.models import (
     Candidate,
     Employment,
+    Favorite,
     Profession,
     Technology,
     Town,
@@ -64,6 +69,36 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
+
+    @action(
+        detail=True,
+        serializer_class=None,
+        permission_classes=(permissions.IsAuthenticated,),
+        methods=(
+            "POST",
+            "DELETE",
+        ),
+    )
+    def favorite(self, request, pk=None):
+        """Добавление/удаление кандидатов в избранное."""
+        candidate = get_object_or_404(Candidate, pk=pk)
+        current_user = self.request.user
+        serializer = FavoriteSerializer(
+            data={"candidate": pk, "user": current_user.id},
+            context={"method": self.request.method},
+        )
+        serializer.is_valid(raise_exception=True)
+        if self.request.method == "POST":
+            Favorite.objects.create(
+                candidate=candidate, user=self.request.user
+            )
+            serializer = CandidateShortSerializer(candidate)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        elif self.request.method == "DELETE":
+            favorite = candidate.favorite.filter(user=self.request.user)
+            favorite.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):
