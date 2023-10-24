@@ -1,6 +1,31 @@
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
-from candidate.models import Candidate, Contact, Profession, Technology, Town
+from candidate.models import (
+    Candidate,
+    Contact,
+    Employment,
+    Profession,
+    Technology,
+    Town,
+)
+
+
+class EmploymentSerializer(serializers.ModelSerializer):
+    """Сериализатор формата работы."""
+
+    class Meta:
+        model = Employment
+        fields = (
+            "id",
+            "name",
+            "slug",
+        )
+        read_only_fields = (
+            "id",
+            "name",
+            "slug",
+        )
 
 
 class TechnologySerializer(serializers.ModelSerializer):
@@ -65,6 +90,8 @@ class CandidateSerializer(serializers.ModelSerializer):
     contacts = ContactSerializer()
     town = TownSerializer()
     profession = ProfessionSerializer()
+    employment = EmploymentSerializer(many=True)
+    photo = Base64ImageField()
 
     class Meta:
         model = Candidate
@@ -74,6 +101,8 @@ class CandidateSerializer(serializers.ModelSerializer):
             "town",
             "profession",
             "grade",
+            "employment",
+            "photo",
         )
         read_only_fields = (
             "id",
@@ -81,4 +110,6 @@ class CandidateSerializer(serializers.ModelSerializer):
             "town",
             "profession",
             "grade",
+            "employment",
+            "photo",
         )

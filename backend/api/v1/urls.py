@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 from api.v1.views import (
     CandidateViewSet,
+    EmploymentViewSet,
     MyUsersViewSet,
     ProfessionViewSet,
     TechnologyViewSet,
@@ -15,18 +16,20 @@ from api.v1.views import (
 
 app_name = "api"
 
+api_info = openapi.Info(
+    title="Candidate API",
+    default_version="v1",
+    description="Документация для проекта Bridge",
+)
+
 schema_view = get_schema_view(
-    openapi.Info(
-        title="Candidate API",
-        default_version="v1",
-        description="Документация для проекта Bridge",
-    ),
     public=True,
     permission_classes=[permissions.AllowAny],
 )
 
 router_v1 = DefaultRouter()
 
+router_v1.register("employment", EmploymentViewSet, basename="employment")
 router_v1.register("technology", TechnologyViewSet, basename="technology")
 router_v1.register("town", TownViewSet, basename="town")
 router_v1.register("profession", ProfessionViewSet, basename="profession")

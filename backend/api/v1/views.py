@@ -6,11 +6,18 @@ from rest_framework.views import APIView
 
 from api.v1.serializers import (
     CandidateSerializer,
+    EmploymentSerializer,
     ProfessionSerializer,
     TechnologySerializer,
     TownSerializer,
 )
-from candidate.models import Candidate, Profession, Technology, Town
+from candidate.models import (
+    Candidate,
+    Employment,
+    Profession,
+    Technology,
+    Town,
+)
 
 
 class UserActivationView(APIView):
@@ -57,3 +64,10 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
+
+
+class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):
+    """Класс формата работы."""
+
+    queryset = Employment.objects.all()
+    serializer_class = EmploymentSerializer
