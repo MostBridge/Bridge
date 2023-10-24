@@ -1,10 +1,22 @@
 from random import choice
 
 import factory
+from django.utils import timezone
+from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
 from faker.providers import BaseProvider
 
-from candidate.models import Profession, Technology, Contact, Candidate, Town
+from candidate.models import (
+    Profession,
+    Technology,
+    Contact,
+    Candidate,
+    Town,
+    Employment,
+    Favorite,
+)
+
+User = get_user_model()
 
 
 class Provider(BaseProvider):
@@ -22,6 +34,8 @@ class Provider(BaseProvider):
         "Saint-Petersburg",
     ]
 
+    work_format_types = ["Удалёнка", "Офис", "Гибрид"]
+
     def tech_type(self):
         """Типы технологий."""
         return self.random_element(self.tech_types)
@@ -29,6 +43,10 @@ class Provider(BaseProvider):
     def town_type(self):
         """Типы городов."""
         return self.random_element(self.town_types)
+
+    def work_format_type(self):
+        """Типы рабчих форматов."""
+        return self.random_element(self.work_format_types)
 
 
 factory.Faker.add_provider(Provider)
@@ -54,6 +72,17 @@ class TechnologyFactory(DjangoModelFactory):
     slug = factory.Faker("slug")
 
 
+class EmploymentFactory(DjangoModelFactory):
+    """Фабрика технологий для тестирования проекта."""
+
+    class Meta:
+        model = Employment
+        django_get_or_create = ("name",)
+
+    name = factory.Faker("work_format_type")
+    slug = factory.Faker("slug")
+
+
 class TownFactory(DjangoModelFactory):
     """Фабрика городов для тестирования проекта."""
 
@@ -70,9 +99,11 @@ class CandidateFactory(DjangoModelFactory):
     class Meta:
         model = Candidate
 
+    employment = factory.RelatedFactory(EmploymentFactory)
     profession = factory.SubFactory(ProfessionFactory)
     grade = choice(["Junior", "MIDLE"])
     town = factory.SubFactory(TownFactory)
+    created_date = timezone.now()
 
 
 class ContactFactory(DjangoModelFactory):
@@ -87,6 +118,15 @@ class ContactFactory(DjangoModelFactory):
     telegram = factory.Faker("user_name")
 
 
+class FavoriteFactory(DjangoModelFactory):
+    """Фабрика избранного для тестирования проекта."""
+
+    class Meta:
+        model = Favorite
+
+    candidate = factory.SubFactory(CandidateFactory)
+
+
 def create_profession(amount: int = 1):
     """Создание профессий для тестов программы."""
     ProfessionFactory.create_batch(amount)
@@ -95,3 +135,8 @@ def create_profession(amount: int = 1):
 def create_contacts(amount: int = 1):
     """Создание контактов для тестов программы."""
     ContactFactory.create_batch(amount)
+
+
+def create_favorites(amount: int = 1):
+    """Создание профессий для тестов программы."""
+    FavoriteFactory.create_batch(amount)
