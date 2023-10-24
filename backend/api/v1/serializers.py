@@ -100,6 +100,7 @@ class CandidateSerializer(serializers.ModelSerializer):
         current_user = self.context["request"].user
         return obj.favorite.filter(user=current_user).exists()
 
+
     class Meta:
         model = Candidate
         fields = (
@@ -121,6 +122,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "employment",
             "photo",
             "is_favorited",
+
         )
 
 

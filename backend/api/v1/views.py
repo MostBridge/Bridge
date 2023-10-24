@@ -100,6 +100,7 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
 class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):
     """Класс формата работы."""
 
