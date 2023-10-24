@@ -51,7 +51,7 @@ class Town(models.Model):
         verbose_name="Область, регион", max_length=50, null=True, blank=True
     )
     city = models.CharField(
-        verbose_name="Название города", max_length=50, unique=True
+        verbose_name="Название города", max_length=50, blank=False
     )
     district = models.CharField(
         verbose_name="Округ", max_length=50, null=True, blank=True
@@ -66,8 +66,42 @@ class Town(models.Model):
         return self.city
 
 
+class Employment(models.Model):
+    """Модель формата работы."""
+
+    name = models.CharField(
+        verbose_name="Название формата", max_length=50, unique=True
+    )
+    slug = models.SlugField(
+        verbose_name="Slug",
+        max_length=50,
+        unique=True,
+    )
+
+    class Meta:
+        verbose_name = "Формат работы"
+        verbose_name_plural = "Форматы работ"
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
+
 class Candidate(models.Model):
     """Модель кандидатов."""
+
+    employment = models.ManyToManyField(
+        Employment,
+        verbose_name="Формат работы",
+        related_name="candidate",
+        blank=False,
+    )
+
+    photo = models.ImageField(
+        "Фото кандидата",
+        upload_to="media/",
+        blank=True,
+    )
 
     class GradeName(StrEnum):
         """Enum grade."""
@@ -103,6 +137,11 @@ class Candidate(models.Model):
         related_name="candidates",
         blank=False,
         default=None,
+    )
+
+    created_date = models.DateTimeField(
+        "Дата создания кандидата",
+        auto_now_add=True,
     )
 
     class Meta:

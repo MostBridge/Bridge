@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="town",
             name="city",
             field=models.CharField(
-                max_length=50, unique=True, verbose_name="Название города"
+                max_length=50, verbose_name="Название города"
             ),
         ),
         migrations.AlterField(
