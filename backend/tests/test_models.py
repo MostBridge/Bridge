@@ -1,3 +1,5 @@
+import pytest
+
 from django.test import TestCase
 from candidate.models import (
     Profession,
@@ -27,7 +29,6 @@ class CandidateModelTests(TestCase):
         """
         profession = ProfessionFactory.create()
         model_post = Profession.objects.get(name=profession)
-
         self.assertEqual(profession.name, model_post.name)
 
     def test_creating_town(self):

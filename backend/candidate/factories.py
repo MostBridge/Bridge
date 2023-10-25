@@ -1,10 +1,9 @@
-from random import choice
-
 import factory
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
 from faker.providers import BaseProvider
+from factory.fuzzy import FuzzyInteger
 
 from candidate.models import (
     Profession,
@@ -17,17 +16,14 @@ from candidate.models import (
 )
 
 User = get_user_model()
+LOW_LIMIT = 0
+HIGH_LIMIT = 50
 
 
 class Provider(BaseProvider):
     """Provider для создания данных."""
 
-    tech_types = [
-        "Django",
-        "Html",
-        "Css",
-        "Docker",
-    ]
+    tech_types = ["Django", "Html", "Css", "Docker", "JS"]
 
     town_types = [
         "Moscow",
@@ -35,6 +31,10 @@ class Provider(BaseProvider):
     ]
 
     work_format_types = ["Удалёнка", "Офис", "Гибрид"]
+
+    grade_types = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
+
+    grade_types = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
 
     def tech_type(self):
         """Типы технологий."""
@@ -47,6 +47,10 @@ class Provider(BaseProvider):
     def work_format_type(self):
         """Типы рабчих форматов."""
         return self.random_element(self.work_format_types)
+
+    def grades_types(self):
+        """Типы рабчих форматов."""
+        return self.random_element(self.grade_types)
 
 
 factory.Faker.add_provider(Provider)
@@ -99,9 +103,14 @@ class CandidateFactory(DjangoModelFactory):
     class Meta:
         model = Candidate
 
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
     employment = factory.RelatedFactory(EmploymentFactory)
+    project = FuzzyInteger(LOW_LIMIT, HIGH_LIMIT)
+    portfolio = factory.Faker("url")
+    reviews = factory.Faker("url")
     profession = factory.SubFactory(ProfessionFactory)
-    grade = choice(["Junior", "MIDLE"])
+    grade = factory.Faker("grades_types")
     town = factory.SubFactory(TownFactory)
     created_date = timezone.now()
 
@@ -113,7 +122,7 @@ class ContactFactory(DjangoModelFactory):
         model = Contact
 
     candidate = factory.SubFactory(CandidateFactory)
-    phone_number = factory.Faker("phone_number")
+    phone_number = factory.Faker("phone_number", locale="ru_RU")
     email = factory.Faker("email")
     telegram = factory.Faker("user_name")
 
@@ -130,6 +139,11 @@ class FavoriteFactory(DjangoModelFactory):
 def create_profession(amount: int = 1):
     """Создание профессий для тестов программы."""
     ProfessionFactory.create_batch(amount)
+
+
+def create_technology(amount: int = 1):
+    """Создание технологии для тестов программы."""
+    TechnologyFactory.create_batch(amount)
 
 
 def create_contacts(amount: int = 1):
