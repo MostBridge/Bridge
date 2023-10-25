@@ -56,6 +56,9 @@ service: # Запуск Django пока без gunicorn
 create-profession: # Команда для создания профессий
 	poetry run python backend/manage.py create_profession --amount ${amount}
 
+create-technology: # Команда для создания технологии
+	poetry run python backend/manage.py create_technology --amount ${amount}
+
 create-contact: # Команда для создания контакта
 	poetry run python backend/manage.py create_contacts --amount ${amount}
 
