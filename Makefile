@@ -28,6 +28,7 @@ stop-db: # Остановка контейнера Postgres
     then \
 		docker compose -f infra/dev/docker-compose.local.yaml down; \
 	fi
+	@sleep(3);
 
 clear-db: # Очистка БД Postgres
 	docker-compose -f infra/dev/docker-compose.local.yaml down --volumes; \
@@ -57,3 +58,6 @@ create-profession: # Команда для создания профессий
 
 create-contact: # Команда для создания контакта
 	poetry run python backend/manage.py create_contacts --amount ${amount}
+
+create-favorites: # Команда для создания контакта
+	poetry run python backend/manage.py create_favorites --amount ${amount}
