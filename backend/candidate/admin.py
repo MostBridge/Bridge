@@ -38,7 +38,13 @@ class CandidateAdmin(admin.ModelAdmin):
     """Управление кандидатами."""
 
     list_display = (
-        "contacts",
+        "full_name",
+        "profession",
         "town",
     )
     inlines = [ContactInline]
+
+    @admin.display(description="Полное имя")
+    def full_name(self, obj):
+        """Добавление полного имени."""
+        return f"{obj.first_name} {obj.last_name}"

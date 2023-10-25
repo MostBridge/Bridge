@@ -14,7 +14,7 @@ from api.v1.views import (
     UserActivationView,
 )
 
-app_name = "api"
+app_name = "v1"
 
 api_info = openapi.Info(
     title="Candidate API",

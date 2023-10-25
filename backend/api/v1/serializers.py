@@ -100,11 +100,18 @@ class CandidateSerializer(serializers.ModelSerializer):
         current_user = self.context["request"].user
         return obj.favorite.filter(user=current_user).exists()
 
-
     class Meta:
         model = Candidate
         fields = (
             "id",
+            "first_name",
+            "last_name",
+            "experience",
+            "employment",
+            "project",
+            "portfolio",
+            "resume",
+            "reviews",
             "contacts",
             "town",
             "profession",
@@ -115,6 +122,14 @@ class CandidateSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
+            "first_name",
+            "last_name",
+            "experience",
+            "employment",
+            "project",
+            "portfolio",
+            "resume",
+            "reviews",
             "contacts",
             "town",
             "profession",
@@ -122,7 +137,6 @@ class CandidateSerializer(serializers.ModelSerializer):
             "employment",
             "photo",
             "is_favorited",
-
         )
 
 

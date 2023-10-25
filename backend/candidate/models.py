@@ -1,10 +1,38 @@
 from enum import StrEnum
 
+import django.conf
 from django.contrib.auth import get_user_model
-from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 
+from candidate.validators import validate_file_extension
+
 User = get_user_model()
+
+
+class GradeName(StrEnum):
+    """Enum grade."""
+
+    junior = "Junior"
+    middle = "Middle"
+
+    @classmethod
+    def choices(cls):
+        """Choices method."""
+        return [(item.value, item.name) for item in cls]
+
+
+class ExperienceTitle(StrEnum):
+    """Enum experience."""
+
+    no = "Нет опыта"
+    one = "1 - 3 года"
+    three = "3 - 6 лет"
+
+    @classmethod
+    def choices(cls):
+        """Choices method."""
+        return [(item.value, item.name) for item in cls]
 
 
 class Technology(models.Model):
@@ -90,6 +118,20 @@ class Employment(models.Model):
 class Candidate(models.Model):
     """Модель кандидатов."""
 
+    first_name = models.CharField(
+        "Имя", max_length=150, blank=False, default=""
+    )
+    last_name = models.CharField(
+        "Фамилия", max_length=150, blank=False, default=""
+    )
+
+    experience = models.CharField(
+        "Коммерческий опыт",
+        max_length=16,
+        choices=ExperienceTitle.choices(),
+        default=ExperienceTitle.no,
+    )
+
     employment = models.ManyToManyField(
         Employment,
         verbose_name="Формат работы",
@@ -97,22 +139,33 @@ class Candidate(models.Model):
         blank=False,
     )
 
-    photo = models.ImageField(
-        "Фото кандидата",
-        upload_to="media/",
-        blank=True,
+    project = models.PositiveSmallIntegerField(
+        "Не учебные/pet проекты",
+        help_text="Укажите количество не учебных(pet) проектов",
+        validators=[MaxValueValidator(50)],
+        default=0,
+        blank=False,
     )
 
-    class GradeName(StrEnum):
-        """Enum grade."""
+    portfolio = models.URLField(
+        "Портфолио", unique=True, blank=False, default=None
+    )
 
-        junior = "Junior"
-        middle = "Middle"
+    resume = models.FileField(
+        "Резюме",
+        upload_to=django.conf.settings.MEDIA_ROOT,
+        blank=False,
+        validators=[validate_file_extension],
+        default=None,
+    )
 
-        @classmethod
-        def choices(cls):
-            """Choices method."""
-            return [(item.value, item.name) for item in cls]
+    reviews = models.URLField("Отзывы менторов", blank=True, default=None)
+
+    photo = models.ImageField(
+        "Фото кандидата",
+        upload_to=django.conf.settings.MEDIA_ROOT,
+        blank=True,
+    )
 
     profession = models.ForeignKey(
         Profession,
@@ -147,6 +200,9 @@ class Candidate(models.Model):
     class Meta:
         verbose_name = "Кандидат"
         verbose_name_plural = "Кандидаты"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Contact(models.Model):

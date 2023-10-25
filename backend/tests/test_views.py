@@ -1,12 +1,12 @@
-from django.test import TestCase
 from http import HTTPStatus
 
+from django.urls import reverse
+
 from candidate.factories import CandidateFactory
+from tests.fixtures import BaseCaseForCandidateTests
 
-ENDPOINTS = ("technology", "candidates", "town", "profession", "employment")
 
-
-class CandidateViewTests(TestCase):
+class CandidateViewTests(BaseCaseForCandidateTests):
     """
     Test class for candidate Views
     """
@@ -15,16 +15,22 @@ class CandidateViewTests(TestCase):
         """
         Test check view
         """
-        for endpoint in ENDPOINTS:
-            response = self.client.get(f"/api/v1/{endpoint}/")
-            self.assertEqual(response.status_code, HTTPStatus.OK)
+        for endpoint in self.ENDPOINTS:
+            with self.subTest(endpoint=endpoint):
+                response = self.client.get(endpoint)
+                self.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
+
+        for endpoint in self.ENDPOINTS:
+            with self.subTest(endpoint=endpoint):
+                response = self.auth_client.get(endpoint)
+                self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_check_registration_view(self):
         """
         Test for check registration
         """
         response = self.client.post(
-            "/api/v1/users/",
+            reverse("api:v1:users-list"),
             {
                 "email": "user@example.com",
                 "username": "user",
@@ -38,7 +44,9 @@ class CandidateViewTests(TestCase):
         Test town id view
         """
         candidate = CandidateFactory.create()
-        response = self.client.get(f"/api/v1/town/{candidate.town.id}/")
+        response = self.auth_client.get(
+            reverse("api:v1:town-detail", kwargs={"pk": candidate.town.id})
+        )
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_profession_id_view(self):
@@ -46,7 +54,10 @@ class CandidateViewTests(TestCase):
         Test profession id view
         """
         candidate = CandidateFactory.create()
-        response = self.client.get(
-            f"/api/v1/profession/{candidate.profession.id}/"
+        response = self.auth_client.get(
+            reverse(
+                "api:v1:profession-detail",
+                kwargs={"pk": candidate.profession.id},
+            )
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
