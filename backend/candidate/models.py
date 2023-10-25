@@ -153,7 +153,7 @@ class Candidate(models.Model):
 
     resume = models.FileField(
         "Резюме",
-        upload_to=settings.MEDIA_ROOT,
+        upload_to=settings.MEDIA_URL,
         blank=False,
         validators=[validate_file_extension],
         default=None,
@@ -163,7 +163,7 @@ class Candidate(models.Model):
 
     photo = models.ImageField(
         "Фото кандидата",
-        upload_to=settings.MEDIA_ROOT,
+        upload_to=settings.MEDIA_URL,
         blank=True,
     )
 
