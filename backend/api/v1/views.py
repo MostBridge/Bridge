@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from rest_framework import permissions, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -73,7 +73,6 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
     @action(
         detail=True,
         serializer_class=None,
-        permission_classes=(permissions.IsAuthenticated,),
         methods=(
             "POST",
             "DELETE",
@@ -98,7 +97,6 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
             favorite = candidate.favorite.filter(user=self.request.user)
             favorite.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):

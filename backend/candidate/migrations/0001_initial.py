@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                     "grade",
                     models.CharField(
                         choices=[("Junior", "junior"), ("Middle", "middle")],
-                        default=candidate.models.Candidate.GradeName["junior"],
+                        default=candidate.models.GradeName["junior"],
                         max_length=16,
                         verbose_name="Грейд",
                     ),
