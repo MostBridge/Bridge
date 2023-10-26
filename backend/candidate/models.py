@@ -3,6 +3,7 @@ from enum import StrEnum
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
+from django.conf import settings
 
 from candidate.validators import validate_file_extension
 
@@ -152,7 +153,7 @@ class Candidate(models.Model):
 
     resume = models.FileField(
         "Резюме",
-        upload_to="media/",
+        upload_to=settings.RESUMES_UPLOAD,
         blank=False,
         validators=[validate_file_extension],
         default=None,
@@ -162,7 +163,7 @@ class Candidate(models.Model):
 
     photo = models.ImageField(
         "Фото кандидата",
-        upload_to="media/",
+        upload_to=settings.PHOTO_UPLOAD,
         blank=True,
     )
 
