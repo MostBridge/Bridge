@@ -3,14 +3,25 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from candidate.models import (
+    EducationTitle,
     Employment,
     ExperienceTitle,
     GradeName,
     Profession,
+    Technology,
     Town,
 )
 
 User = get_user_model()
+
+
+class VacancyStatus(models.TextChoices):
+    """Класс выбора статуса вакансии."""
+
+    active = "active", _("Активная")
+    not_active = "not active", _("Не активная")
+    archived = "archived", _("Архивная")
+    hidden = "hidden", _("Скрытая")
 
 
 class Vacancy(models.Model):
@@ -37,12 +48,6 @@ class Vacancy(models.Model):
         default="Россия",
     )
 
-    class EducationTitle(models.TextChoices):
-        high = "h", _("Высшее")
-        high_profile = "hp", _("Высшее профильное")
-        no_matter = "nm", _("Не важно")
-        secondary_professional = "sp", _("Средне-техническое")
-
     education = models.CharField(
         "Образование",
         choices=EducationTitle.choices,
@@ -60,12 +65,6 @@ class Vacancy(models.Model):
         "Дата создания вакансии",
         auto_now_add=True,
     )
-
-    class VacancyStatus(models.TextChoices):
-        active = "Активная"
-        not_active = "Не активная"
-        archived = "Архивная"
-        hidden = "Скрытая"
 
     status = models.CharField(
         "Статус вакансии",
@@ -85,8 +84,15 @@ class Vacancy(models.Model):
     grade = models.CharField(
         "Грейд",
         max_length=16,
-        choices=GradeName.choices(),
+        choices=GradeName.choices,
         default=GradeName.junior,
+    )
+
+    technology = models.ManyToManyField(
+        Technology,
+        verbose_name="Стек технологий",
+        related_name="vacancy",
+        blank=False,
     )
 
     town = models.ForeignKey(
@@ -108,12 +114,15 @@ class Vacancy(models.Model):
     experience = models.CharField(
         "Коммерческий опыт",
         max_length=16,
-        choices=ExperienceTitle.choices(),
+        choices=ExperienceTitle.choices,
         default=ExperienceTitle.no,
     )
 
     description = models.TextField(
-        "Описание вакансии", help_text="Добавьте условия вакансии", blank=True
+        "Описание вакансии",
+        help_text="Добавьте условия вакансии",
+        max_length=4000,
+        blank=True,
     )
 
     class Meta:

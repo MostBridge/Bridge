@@ -17,6 +17,7 @@ from api.v1.serializers import (
     TechnologySerializer,
     TownSerializer,
     VacancySerializer,
+    VacancySerializerCreate,
 )
 from candidate.models import (
     Candidate,
@@ -84,12 +85,11 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
         candidate = self.get_object()
         if not current_user.viewed.filter(candidate=candidate).exists():
             View.objects.create(candidate=candidate, user=self.request.user)
-        serializer = self.get_serializer(candidate)
+        serializer = CandidateSerializer(candidate)
         return Response(serializer.data)
 
     @action(
         detail=True,
-        serializer_class=None,
         methods=(
             "POST",
             "DELETE",
@@ -115,7 +115,7 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
             favorite.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, serializer_class=None, methods=("GET",))
+    @action(detail=False, methods=("GET",))
     def resumes_download(self, request):
         """Скачивание резюме избранных кандидатов."""
         current_user = self.request.user
@@ -138,3 +138,48 @@ class VacancyViewSet(viewsets.ModelViewSet):
 
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
+
+    def perform_create(self, serializer):
+        """При создании вакансии author текущий user."""
+        serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        """При обновлении вакансии author текущий user."""
+        serializer.save(author=self.request.user)
+
+    def get_serializer_class(self):
+        """Метод изменения класса сериализатора при разных методах."""
+        if self.request.method in ("POST", "PATCH"):
+            return VacancySerializerCreate
+        return VacancySerializer
+
+    def create(self, request, *args, **kwargs):
+        """Переопределение сериализатора выходных данных при создании."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        response_serializer = VacancySerializer(instance=serializer.instance)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            response_serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
+    def update(self, request, *args, **kwargs):
+        """Переопределение сериализатора выходных данных при обновлении."""
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, "_prefetched_objects_cache", None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        response_serializer = VacancySerializer(instance=serializer.instance)
+        return Response(response_serializer.data)
