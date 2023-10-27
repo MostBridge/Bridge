@@ -32,9 +32,9 @@ class EducationTitle(models.TextChoices):
     """Класс выбора образования."""
 
     high = "high", _("Высшее")
-    high_profile = "high profile", _("Высшее профильное")
-    no_matter = "no matter", _("Не важно")
-    secondary_professional = "secondary professional", _("Средне-техническое")
+    high_profile = "high_profile", _("Высшее профильное")
+    no_matter = "no_matter", _("Не важно")
+    secondary_professional = "secondary_professional", _("Средне-техническое")
 
 
 class Technology(models.Model):

@@ -19,7 +19,7 @@ class VacancyStatus(models.TextChoices):
     """Класс выбора статуса вакансии."""
 
     active = "active", _("Активная")
-    not_active = "not active", _("Не активная")
+    not_active = "not_active", _("Не активная")
     archived = "archived", _("Архивная")
     hidden = "hidden", _("Скрытая")
 
@@ -50,6 +50,7 @@ class Vacancy(models.Model):
 
     education = models.CharField(
         "Образование",
+        max_length=50,
         choices=EducationTitle.choices,
         default=EducationTitle.high_profile,
     )
@@ -68,6 +69,7 @@ class Vacancy(models.Model):
 
     status = models.CharField(
         "Статус вакансии",
+        max_length=16,
         choices=VacancyStatus.choices,
         default=VacancyStatus.active,
     )
