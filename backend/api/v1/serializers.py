@@ -10,6 +10,7 @@ from candidate.models import (
     Technology,
     Town,
 )
+from vacancy.models import Vacancy
 
 
 class EmploymentSerializer(serializers.ModelSerializer):
@@ -171,3 +172,41 @@ class FavoriteSerializer(serializers.ModelSerializer):
                     {"errors": "Кандидата нет в избранном!"}
                 )
         return attrs
+
+
+class VacancySerializer(serializers.ModelSerializer):
+    """Сериализатор вакансий."""
+
+    class Meta:
+        model = Vacancy
+
+        fields = (
+            "id",
+            "title",
+            "company",
+            "country",
+            "education",
+            "status",
+            "author",
+            "grade",
+            "profession",
+            "town",
+            "employment",
+            "experience",
+            "description",
+        )
+        read_only_fields = (
+            "id",
+            "title",
+            "company",
+            "country",
+            "education",
+            "status",
+            "author",
+            "grade",
+            "profession",
+            "town",
+            "employment",
+            "experience",
+            "description",
+        )

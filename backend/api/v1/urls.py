@@ -12,6 +12,7 @@ from api.v1.views import (
     TechnologyViewSet,
     TownViewSet,
     UserActivationView,
+    VacancyViewSet,
 )
 
 app_name = "v1"
@@ -35,6 +36,7 @@ router_v1.register("town", TownViewSet, basename="town")
 router_v1.register("profession", ProfessionViewSet, basename="profession")
 router_v1.register("candidates", CandidateViewSet, basename="candidates")
 router_v1.register("users", MyUsersViewSet, basename="users")
+router_v1.register("vacancy", VacancyViewSet, basename="vacancy")
 
 urlpatterns = [
     re_path(

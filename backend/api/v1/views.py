@@ -14,6 +14,7 @@ from api.v1.serializers import (
     ProfessionSerializer,
     TechnologySerializer,
     TownSerializer,
+    VacancySerializer,
 )
 from candidate.models import (
     Candidate,
@@ -23,6 +24,7 @@ from candidate.models import (
     Technology,
     Town,
 )
+from vacancy.models import Vacancy
 
 
 class UserActivationView(APIView):
@@ -104,3 +106,10 @@ class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Employment.objects.all()
     serializer_class = EmploymentSerializer
+
+
+class VacancyViewSet(viewsets.ModelViewSet):
+    """Класс вакансий."""
+
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer

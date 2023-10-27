@@ -30,6 +30,7 @@ LOCAL_APPS = [
     "api",
     "candidate",
     "users",
+    "vacancy",
 ]
 
 EXTERNAL_APPS = [
