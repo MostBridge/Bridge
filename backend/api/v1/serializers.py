@@ -4,12 +4,17 @@ from rest_framework import serializers
 from candidate.models import (
     Candidate,
     Contact,
+    EducationTitle,
     Employment,
+    ExperienceTitle,
     Favorite,
+    GradeName,
     Profession,
     Technology,
     Town,
 )
+from users.serializers import UserSerializer
+from vacancy.models import Vacancy, VacancyStatus
 
 
 class EmploymentSerializer(serializers.ModelSerializer):
@@ -196,3 +201,82 @@ class FavoriteDownloadSerializers(FavoriteSerializer):
                 {"errors": "В избранном нет кандидатов!"}
             )
         return favorite
+
+
+class VacancySerializer(serializers.ModelSerializer):
+    """Сериализатор вакансий."""
+
+    title = serializers.CharField()
+    company = serializers.CharField()
+    country = serializers.CharField()
+    education = serializers.ChoiceField(choices=EducationTitle.choices)
+    status = serializers.ChoiceField(choices=VacancyStatus.choices)
+    grade = serializers.ChoiceField(choices=GradeName.choices)
+    profession = ProfessionSerializer()
+    experience = serializers.ChoiceField(choices=ExperienceTitle.choices)
+    author = UserSerializer(default=serializers.CurrentUserDefault())
+    town = TownSerializer()
+    employment = EmploymentSerializer(many=True)
+    technology = TechnologySerializer(many=True)
+    description = serializers.CharField(max_length=4000)
+
+    class Meta:
+        model = Vacancy
+
+        fields = (
+            "id",
+            "title",
+            "company",
+            "country",
+            "education",
+            "status",
+            "author",
+            "grade",
+            "profession",
+            "town",
+            "employment",
+            "experience",
+            "description",
+            "technology",
+            "created_date",
+        )
+        read_only_fields = (
+            "id",
+            "title",
+            "company",
+            "country",
+            "education",
+            "status",
+            "author",
+            "grade",
+            "profession",
+            "town",
+            "employment",
+            "experience",
+            "description",
+            "technology",
+            "created_date",
+        )
+
+
+class VacancySerializerCreate(VacancySerializer):
+    """Сериализатор создания вакансии."""
+
+    profession = serializers.PrimaryKeyRelatedField(
+        queryset=Profession.objects.all()
+    )
+    technology = serializers.PrimaryKeyRelatedField(
+        queryset=Technology.objects.all(), many=True
+    )
+    town = serializers.PrimaryKeyRelatedField(
+        queryset=Town.objects.all(),
+    )
+    employment = serializers.PrimaryKeyRelatedField(
+        queryset=Employment.objects.all(), many=True
+    )
+
+    class Meta(VacancySerializer.Meta):
+        read_only_fields = (
+            "id",
+            "author",
+        )

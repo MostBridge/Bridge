@@ -1,38 +1,40 @@
-from enum import StrEnum
-
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from candidate.validators import validate_file_extension
 
 User = get_user_model()
 
 
-class GradeName(StrEnum):
+class GradeName(models.TextChoices):
     """Enum grade."""
 
-    junior = "Junior"
-    middle = "Middle"
-
-    @classmethod
-    def choices(cls):
-        """Choices method."""
-        return [(item.value, item.name) for item in cls]
+    junior = "junior", _("Junior")
+    middle = "middle", _("Middle")
 
 
-class ExperienceTitle(StrEnum):
-    """Enum experience."""
+class ExperienceTitle(models.TextChoices):
+    """Класс выбора опыта."""
 
-    no = "Нет опыта"
-    one = "1 - 3 года"
-    three = "3 - 6 лет"
+    no = "no", _(
+        "Нет опыта",
+    )
+    one = "one", _(
+        "1 - 3 года",
+    )
+    three = "three", _("3 - 6 лет")
 
-    @classmethod
-    def choices(cls):
-        """Choices method."""
-        return [(item.value, item.name) for item in cls]
+
+class EducationTitle(models.TextChoices):
+    """Класс выбора образования."""
+
+    high = "high", _("Высшее")
+    high_profile = "high_profile", _("Высшее профильное")
+    no_matter = "no_matter", _("Не важно")
+    secondary_professional = "secondary_professional", _("Средне-техническое")
 
 
 class Technology(models.Model):
@@ -134,8 +136,15 @@ class Candidate(models.Model):
     experience = models.CharField(
         "Коммерческий опыт",
         max_length=16,
-        choices=ExperienceTitle.choices(),
+        choices=ExperienceTitle.choices,
         default=ExperienceTitle.no,
+    )
+
+    technology = models.ManyToManyField(
+        Technology,
+        verbose_name="Стек технологий",
+        related_name="candidate",
+        blank=False,
     )
 
     employment = models.ManyToManyField(
@@ -185,7 +194,7 @@ class Candidate(models.Model):
     grade = models.CharField(
         "Грейд",
         max_length=16,
-        choices=GradeName.choices(),
+        choices=GradeName.choices,
         default=GradeName.junior,
     )
 
