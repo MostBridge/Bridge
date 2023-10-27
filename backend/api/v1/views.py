@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status, viewsets
@@ -10,6 +11,7 @@ from api.v1.serializers import (
     CandidateSerializer,
     CandidateShortSerializer,
     EmploymentSerializer,
+    FavoriteDownloadSerializers,
     FavoriteSerializer,
     ProfessionSerializer,
     TechnologySerializer,
@@ -23,8 +25,12 @@ from candidate.models import (
     Profession,
     Technology,
     Town,
+    View,
 )
+from candidate.utils.download import download_files
 from vacancy.models import Vacancy
+
+User = get_user_model()
 
 
 class UserActivationView(APIView):
@@ -72,6 +78,15 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        """Добавление записи в таблицу просмотренных кандидатов."""
+        current_user = self.request.user
+        candidate = self.get_object()
+        if not current_user.viewed.filter(candidate=candidate).exists():
+            View.objects.create(candidate=candidate, user=self.request.user)
+        serializer = self.get_serializer(candidate)
+        return Response(serializer.data)
+
     @action(
         detail=True,
         serializer_class=None,
@@ -99,6 +114,16 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
             favorite = candidate.favorite.filter(user=self.request.user)
             favorite.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, serializer_class=None, methods=("GET",))
+    def resumes_download(self, request):
+        """Скачивание резюме избранных кандидатов."""
+        current_user = self.request.user
+        serializer = FavoriteDownloadSerializers(
+            data={"user": current_user.id}
+        )
+        serializer.is_valid(raise_exception=True)
+        return download_files(serializer.validated_data)
 
 
 class EmploymentViewSet(viewsets.ReadOnlyModelViewSet):

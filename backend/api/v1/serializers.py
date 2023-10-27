@@ -95,11 +95,17 @@ class CandidateSerializer(serializers.ModelSerializer):
     employment = EmploymentSerializer(many=True)
     photo = Base64ImageField()
     is_favorited = serializers.SerializerMethodField()
+    is_viewed = serializers.SerializerMethodField()
 
     def get_is_favorited(self, obj):
         """Метод получения избранных кандидатов."""
         current_user = self.context["request"].user
         return obj.favorite.filter(user=current_user).exists()
+
+    def get_is_viewed(self, obj):
+        """Метод получения просмотренных кандидатов."""
+        current_user = self.context["request"].user
+        return obj.viewed.filter(user=current_user).exists()
 
     class Meta:
         model = Candidate
@@ -120,6 +126,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "employment",
             "photo",
             "is_favorited",
+            "is_viewed",
         )
         read_only_fields = (
             "id",
@@ -138,6 +145,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "employment",
             "photo",
             "is_favorited",
+            "is_viewed",
         )
 
 
@@ -172,6 +180,23 @@ class FavoriteSerializer(serializers.ModelSerializer):
                     {"errors": "Кандидата нет в избранном!"}
                 )
         return attrs
+
+
+class FavoriteDownloadSerializers(FavoriteSerializer):
+    """Сериализатор скачивания резюме избранных кандидатов."""
+
+    class Meta(FavoriteSerializer.Meta):
+        read_only_fields = ("candidate",)
+
+    def validate(self, attrs):
+        """Валидация избранных кандидатов."""
+        current_user = attrs.get("user")
+        favorite = current_user.favorite.all()
+        if not favorite:
+            raise serializers.ValidationError(
+                {"errors": "В избранном нет кандидатов!"}
+            )
+        return favorite
 
 
 class VacancySerializer(serializers.ModelSerializer):

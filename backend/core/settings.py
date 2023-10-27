@@ -162,9 +162,15 @@ STATIC_URL = "static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'media/'
+MEDIA_URL = "media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+RESUMES_UPLOAD = "resumes/"
+
+RESUMES_ARCHIVE_FILENAME = "resumes.zip"
+
+PHOTO_UPLOAD = "photo/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
