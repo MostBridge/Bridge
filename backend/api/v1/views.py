@@ -6,6 +6,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from api.v1.serializers import (
     CandidateSerializer,
@@ -19,6 +20,7 @@ from api.v1.serializers import (
     VacancySerializer,
     VacancySerializerCreate,
 )
+from api.v1.filters import CandidateFilter
 from candidate.models import (
     Candidate,
     Employment,
@@ -78,6 +80,8 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Candidate.objects.all()
     serializer_class = CandidateSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = CandidateFilter
 
     def retrieve(self, request, *args, **kwargs):
         """Добавление записи в таблицу просмотренных кандидатов."""

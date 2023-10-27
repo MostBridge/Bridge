@@ -65,6 +65,12 @@ class Profession(models.Model):
         verbose_name="Название профессии", max_length=50, unique=True
     )
 
+    slug = models.SlugField(
+        verbose_name="Slug",
+        max_length=50,
+        unique=True,
+    )
+
     class Meta:
         verbose_name = "Profession"
         verbose_name_plural = "Professions"

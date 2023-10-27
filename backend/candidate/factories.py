@@ -13,6 +13,7 @@ from candidate.models import (
     Town,
     Employment,
     Favorite,
+    View,
 )
 
 User = get_user_model()
@@ -34,7 +35,11 @@ class Provider(BaseProvider):
 
     grade_types = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
 
-    grade_types = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
+    profession_types = [
+        "Backend-разработчик",
+        "Frontend-разработчик",
+        "Дизайнер",
+    ]
 
     def tech_type(self):
         """Типы технологий."""
@@ -52,6 +57,10 @@ class Provider(BaseProvider):
         """Типы рабчих форматов."""
         return self.random_element(self.grade_types)
 
+    def professions_types(self):
+        """Типы профессий."""
+        return self.random_element(self.profession_types)
+
 
 factory.Faker.add_provider(Provider)
 
@@ -61,8 +70,10 @@ class ProfessionFactory(DjangoModelFactory):
 
     class Meta:
         model = Profession
+        django_get_or_create = ("name",)
 
-    name = factory.Faker("job")
+    name = factory.Faker("professions_types")
+    slug = factory.Faker("slug")
 
 
 class TechnologyFactory(DjangoModelFactory):
@@ -125,6 +136,28 @@ class ContactFactory(DjangoModelFactory):
     phone_number = factory.Faker("phone_number", locale="ru_RU")
     email = factory.Faker("email")
     telegram = factory.Faker("user_name")
+
+
+class UserFactory(DjangoModelFactory):
+    """Фабрика контактов для тестирования проекта."""
+
+    class Meta:
+        model = User
+        django_get_or_create = ("username",)
+
+    email = factory.Faker("email")
+    username = factory.Faker("user_name")
+    password = factory.django.Password("pw")
+
+
+class ViewFactory(DjangoModelFactory):
+    """Фабрика контактов для тестирования проекта."""
+
+    class Meta:
+        model = View
+
+    candidate = factory.SubFactory(CandidateFactory)
+    user = factory.SubFactory(UserFactory)
 
 
 class FavoriteFactory(DjangoModelFactory):
