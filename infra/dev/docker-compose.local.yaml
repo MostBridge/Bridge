@@ -14,7 +14,7 @@ services:
       - ../../.env
     ports:
       - "5432:5432"
-    container_name: postgres-container-bridge
+    container_name: postgres_bridge
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
@@ -22,6 +22,7 @@ services:
     build:
       context: ../../
       dockerfile: Dockerfile
+    restart: always
     container_name: backend-container-bridge
     volumes:
       - static_value:/app/static/
