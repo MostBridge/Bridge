@@ -19,24 +19,25 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   backend:
-    build: ../../backend/
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    container_name: backend-container-bridge
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-      - swagger:/app/api/v1/swagger/
     depends_on:
       - postgres-db
     env_file:
       - ../../.env
 
   nginx:
-    image: nginx:1.19.3
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../frontend/dist:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+      - ../../Frontend/dist/:/usr/share/nginx/html/
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
@@ -47,4 +48,3 @@ volumes:
   postgres-data:
   static_value:
   media_value:
-  swagger:
