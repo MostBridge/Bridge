@@ -1,9 +1,6 @@
 name: Push Docker image to Docker Hub and deploy workflow
 
-on:
-  pull_request:
-    types: [closed]
-    branches: [develop]
+on: [push]
 
 jobs:
   build_and_push_to_docker_hub:
