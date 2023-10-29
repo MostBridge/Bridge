@@ -34,9 +34,10 @@ LOCAL_APPS = [
 ]
 
 EXTERNAL_APPS = [
+    "corsheaders",
+    "djoser",
     "drf_yasg",
     "rest_framework",
-    "djoser",
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + EXTERNAL_APPS
@@ -44,6 +45,7 @@ INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + EXTERNAL_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -125,6 +127,10 @@ DJOSER = {
         'user_list': ['rest_framework.permissions.IsAdminUser'],
     }
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 
 # EMAIL CONFIG
 EMAIL_BACKEND = env.str("EMAIL_BACKEND",
