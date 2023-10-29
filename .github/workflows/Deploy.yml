@@ -28,7 +28,8 @@ jobs:
       - name: Push to Docker Hub bridge_backend
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfile
+          context: backend/
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bridge_backend:latest
             
