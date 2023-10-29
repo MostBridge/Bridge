@@ -35,6 +35,7 @@ jobs:
       - name: Push to Docker Hub bridge_frontend
         uses: docker/build-push-action@v3
         with:
+          submodules: recursive
           context: Frontend/
           file: Frontend/Dockerfile
           push: true
