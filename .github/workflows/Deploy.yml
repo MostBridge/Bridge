@@ -9,10 +9,9 @@ jobs:
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    needs: tests
     if:
       contains('
-          refs/heads/master
+          refs/heads/develop
         ', github.ref)
     steps:
       - name: Check out the repo
@@ -30,7 +29,6 @@ jobs:
       - name: Push to Docker Hub bridge_backend
         uses: docker/build-push-action@v3
         with:
-          context: backend/
           file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bridge_backend:latest
@@ -38,10 +36,10 @@ jobs:
   deploy:
       runs-on: ubuntu-latest
       needs: build_and_push_to_docker_hub
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/develop'
       steps:
       - name: executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@develop
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
