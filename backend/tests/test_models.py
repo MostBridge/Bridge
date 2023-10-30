@@ -64,7 +64,6 @@ class CandidateModelTests(TestCase):
         Test creating candidate model object
         """
         candidate = CandidateFactory.create()
-        print(candidate)
         model_post = Candidate.objects.get(id=candidate.id)
         self.assertEqual(candidate.employment, model_post.employment)
         self.assertEqual(candidate.profession, model_post.profession)
