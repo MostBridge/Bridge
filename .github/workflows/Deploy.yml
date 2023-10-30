@@ -60,5 +60,5 @@ jobs:
             sudo systemctl stop nginx
             sudo docker compose stop
             sudo docker image pull ${{ secrets.DOCKER_USERNAME }}/bridge_backend:latest
-            sudo docker image pull ${{ secrets.DOCKER_USERNAME }}/bridge_front:latest
+            sudo docker image pull ${{ secrets.DOCKER_USERNAME }}/bridge_frontend:latest
             sudo docker compose up -d
