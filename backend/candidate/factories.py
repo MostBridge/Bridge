@@ -137,15 +137,18 @@ class CandidateFactory(DjangoModelFactory):
 
     @factory.post_generation
     def employment(self, create, extracted, **kwargs):
+        """Генерация employment."""
         if not create:
             return
         size = randint(MIN_POST_GEN, MAX_POST_GEN_EMP)
         if size <= Employment.objects.count():
             for emp in range(1, size):
                 self.employment.add(Employment.objects.get(pk=emp))
-    
+
+
     @factory.post_generation
     def technology(self, create, extracted, **kwargs):
+        """Генерация technology."""
         if not create:
             return
         size = randint(MIN_POST_GEN, MAX_POST_GEN_EMP)
