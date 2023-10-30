@@ -97,6 +97,7 @@ class CandidateSerializer(serializers.ModelSerializer):
     town = TownSerializer()
     profession = ProfessionSerializer()
     employment = EmploymentSerializer(many=True)
+    technology = TechnologySerializer(many=True)
     photo = Base64ImageField()
     is_favorited = serializers.SerializerMethodField()
     is_viewed = serializers.SerializerMethodField()
@@ -126,6 +127,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "contacts",
             "town",
             "profession",
+            "technology",
             "grade",
             "employment",
             "photo",
@@ -145,6 +147,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             "contacts",
             "town",
             "profession",
+            "technology",
             "grade",
             "employment",
             "photo",
