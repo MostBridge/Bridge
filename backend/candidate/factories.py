@@ -1,4 +1,6 @@
 import factory
+from random import randint
+
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from factory.django import DjangoModelFactory
@@ -130,7 +132,7 @@ class CandidateFactory(DjangoModelFactory):
     experience = factory.Faker("experience")
     technology = factory.RelatedFactoryList(TechnologyFactory)
     grade = factory.Faker("grades_types")
-    town = factory.SubFactory(TownFactory)
+    town = factory.Iterator(Town.objects.all())
     created_date = timezone.now()
 
 
