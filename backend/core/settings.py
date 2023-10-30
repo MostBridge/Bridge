@@ -143,7 +143,7 @@ EMAIL_USE_SSL = env.str("EMAIL_USE_SSL", default=True)
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
