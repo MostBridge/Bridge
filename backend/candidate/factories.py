@@ -111,9 +111,9 @@ class TownFactory(DjangoModelFactory):
 
     class Meta:
         model = Town
-        django_get_or_create = ("city",)
+        django_get_or_create = ("id",)
 
-    city = factory.Faker("town_type")
+    id = FuzzyInteger(1, 1111)
 
 
 class CandidateFactory(DjangoModelFactory):
@@ -132,7 +132,7 @@ class CandidateFactory(DjangoModelFactory):
     experience = factory.Faker("experience")
     technology = factory.RelatedFactoryList(TechnologyFactory)
     grade = factory.Faker("grades_types")
-    town = factory.Iterator(Town.objects.all())
+    town = factory.SubFactory(TownFactory)
     created_date = timezone.now()
 
 
