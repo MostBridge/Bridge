@@ -33,7 +33,9 @@ class Provider(BaseProvider):
 
     work_format_types = ["Удалёнка", "Офис", "Гибрид"]
 
-    grade_types = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
+    experiences = ["Нет опыта", "1 - 3 года", "3 - 6 лет"]
+
+    grade_types = ["junior", "middle"]
 
     profession_types = [
         "Backend-разработчик",
@@ -50,12 +52,16 @@ class Provider(BaseProvider):
         return self.random_element(self.town_types)
 
     def work_format_type(self):
-        """Типы рабчих форматов."""
+        """Типы рабочих форматов."""
         return self.random_element(self.work_format_types)
 
     def grades_types(self):
-        """Типы рабчих форматов."""
+        """Типы грейда."""
         return self.random_element(self.grade_types)
+
+    def experience(self):
+        """Опыт работы."""
+        return self.random_element(self.experiences)
 
     def professions_types(self):
         """Типы профессий."""
@@ -121,6 +127,7 @@ class CandidateFactory(DjangoModelFactory):
     portfolio = factory.Faker("url")
     reviews = factory.Faker("url")
     profession = factory.SubFactory(ProfessionFactory)
+    experience = factory.Faker("experience")
     grade = factory.Faker("grades_types")
     town = factory.SubFactory(TownFactory)
     created_date = timezone.now()
