@@ -20,7 +20,9 @@ from candidate.models import (
 User = get_user_model()
 LOW_LIMIT = 0
 HIGH_LIMIT = 50
-
+MIN_POST_GEN = 2
+MAX_POST_GEN_TECH = 6
+MAX_POST_GEN_EMP = 4
 
 class Provider(BaseProvider):
     """Provider для создания данных."""
@@ -123,16 +125,35 @@ class CandidateFactory(DjangoModelFactory):
 
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
-    employment = factory.RelatedFactoryList(EmploymentFactory)
     project = FuzzyInteger(LOW_LIMIT, HIGH_LIMIT)
     portfolio = factory.Faker("url")
     reviews = factory.Faker("url")
     profession = factory.SubFactory(ProfessionFactory)
     experience = factory.Faker("experience")
-    technology = factory.RelatedFactoryList(TechnologyFactory)
     grade = factory.Faker("grades_types")
     town = factory.SubFactory(TownFactory)
     created_date = timezone.now()
+
+    @factory.post_generation
+    def employment(self, create, extracted, **kwargs):
+        """Генерация employment."""
+        if not create:
+            return
+        size = randint(MIN_POST_GEN, MAX_POST_GEN_EMP)
+        if size <= Employment.objects.count():
+            for emp in range(1, size):
+                self.employment.add(Employment.objects.get(pk=emp))
+
+
+    @factory.post_generation
+    def technology(self, create, extracted, **kwargs):
+        """Генерация technology."""
+        if not create:
+            return
+        size = randint(MIN_POST_GEN, MAX_POST_GEN_EMP)
+        if size <= Technology.objects.count():
+            for emp in range(1, size):
+                self.technology.add(Technology.objects.get(pk=emp))
 
 
 class ContactFactory(DjangoModelFactory):
