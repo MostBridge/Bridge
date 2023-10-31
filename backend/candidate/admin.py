@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from candidate.models import Candidate, Contact, Profession, Technology, Town
+from candidate.models import (
+    Candidate,
+    Contact,
+    Employment,
+    Profession,
+    Technology,
+    Town,
+)
 
 
 @admin.register(Town)
@@ -14,6 +21,14 @@ class TownAdmin(admin.ModelAdmin):
 @admin.register(Technology)
 class TechnologyAdmin(admin.ModelAdmin):
     """Управление технологиями."""
+
+    list_display = ("name", "slug")
+    search_fields = ("id",)
+
+
+@admin.register(Employment)
+class EmploymentAdmin(admin.ModelAdmin):
+    """Управление форматом работы."""
 
     list_display = ("name", "slug")
     search_fields = ("id",)
