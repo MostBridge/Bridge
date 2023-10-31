@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+  frontend:
+    image: darkdace/bridge_frontend:latest
+    container_name: frontend-bridge
+    volumes:
+      - ../frontend/:/app/result_build/
+
+  postgres-db:
+    image: postgres:15
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    container_name: postgres_bridge
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    image: darkdace/bridge_backend:latest
+    restart: always
+    container_name: backend-container-bridge
+    volumes:
+      - static_value:/app/static/
+      - media_value:/app/media/
+    depends_on:
+      - postgres-db
+    env_file:
+      - .env
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../frontend/dist:/usr/share/nginx/html/
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  postgres-data:
+  static_value:
+  media_value:

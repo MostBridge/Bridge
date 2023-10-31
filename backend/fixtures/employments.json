@@ -1,0 +1,1 @@
+[{"model": "candidate.employment", "pk": 1, "fields": {"name": "Офис", "slug": "office"}}, {"model": "candidate.employment", "pk": 2, "fields": {"name": "Гибрид", "slug": "hybrid"}}, {"model": "candidate.employment", "pk": 3, "fields": {"name": "Удалёнка", "slug": "remote"}}]
