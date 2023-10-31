@@ -16,5 +16,5 @@ jobs:
           script: |
             sudo docker image ls
             sudo docker container ls --all
-            sudo docker image prune
+            sudo docker rmi a0ba7004480f
             sudo docker image ls 
