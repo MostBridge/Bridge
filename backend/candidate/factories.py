@@ -1,5 +1,4 @@
 import factory
-from random import randint
 
 from django.utils import timezone
 from django.contrib.auth import get_user_model
