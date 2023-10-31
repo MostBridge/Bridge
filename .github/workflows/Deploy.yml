@@ -2,7 +2,7 @@ name: Push Docker image to Docker Hub and deploy workflow
 
 on:
   push:
-    branches: [develop]
+    branches: [main]
 
 jobs:
   build_and_push_to_docker_hub:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if:
       contains('
-          refs/heads/develop
+          refs/heads/main
         ', github.ref)
     steps:
       - name: Check out the repo
@@ -60,7 +60,7 @@ jobs:
   deploy:
       runs-on: ubuntu-latest
       needs: build_and_push_to_docker_hub
-      if: github.ref == 'refs/heads/develop'
+      if: github.ref == 'refs/heads/main'
       steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
