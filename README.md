@@ -33,7 +33,7 @@ Bridge service for the Yandex Practicum, Career Tracker
 
 # 3. Подготовка к запуску <a id="start"></a>
 
-Примечение: использование Docker, poetry.
+Примечание: использование Docker, poetry.
 
 ## 3.1. Правила работы с git (как делать коммиты и pull request-ы)<a id="git"></a>:
 
