@@ -18,3 +18,5 @@ jobs:
             sudo docker container rm postgres_bridge
             sudo docker compose up -d
             sudo docker container ls --all
+            sudo docker container restart postgres_bridge
+            sudo docker container restart postgres_bridge
