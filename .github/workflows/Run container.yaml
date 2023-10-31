@@ -15,5 +15,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo docker image ls
-            sudo docker container ls --all
-            sudo docker compose up -d            
+            sudo docker container ls --all                   
