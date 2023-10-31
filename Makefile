@@ -14,7 +14,7 @@ help:  # Вызвать help
 	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "$(COLOR_GREEN)-$$(echo $$l | cut -f 1 -d':'):$(COLOR_WHITE)$$(echo $$l | cut -f 2- -d'#')\n"; done
 
 
-start-db: # Запуск контейнера Postgres
+start: # Запуск контейнеров сервиса
 	docker-compose -f infra/dev/docker-compose.local.yaml up -d; \
 	if [ $$? -ne 0 ]; \
     then \
@@ -22,7 +22,7 @@ start-db: # Запуск контейнера Postgres
 		docker compose version; \
     fi
 
-stop-db: # Остановка контейнера Postgres
+stop: # Остановка контейнеров сервиса
 	docker-compose -f infra/dev/docker-compose.local.yaml down; \
 	if [ $$? -ne 0 ]; \
     then \
@@ -30,7 +30,7 @@ stop-db: # Остановка контейнера Postgres
 	fi
 	@sleep(3);
 
-clear-db: # Очистка БД Postgres
+clear: # Очистка контейнеров сервиса
 	docker-compose -f infra/dev/docker-compose.local.yaml down --volumes; \
 	if [ $$? -ne 0 ]; \
     then \
@@ -42,11 +42,6 @@ migrate: # Выполнение миграций Django
 
 createsuperuser: # Создать супер пользователя
 	poetry run python backend/manage.py createsuperuser --noinput
-
-run-service: # Запуск Django
-	@echo -e "$(COLOR_YELLOW)Starting service...$(COLOR_RESET)"
-	@cd backend && poetry run gunicorn --bind 0:8000 core.asgi:application --reload && cd .. && \
-	echo -e "$(COLOR_GREEN)Service stopped$(COLOR_RESET)"
 
 service: # Запуск Django пока без gunicorn
 	@echo -e "$(COLOR_YELLOW)Starting service...$(COLOR_RESET)"
