@@ -16,5 +16,7 @@ jobs:
           script: |
             sudo docker image ls
             sudo docker container ls --all
-            sudo docker rmi a0ba7004480f
+            sudo docker rmi 73a99bed4243
+            sudo docker rmi 14ac9a8d7fff
+            sudo docker rmi 9ade97530207
             sudo docker image ls 
