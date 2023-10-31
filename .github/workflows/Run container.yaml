@@ -14,5 +14,5 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker container ls --help 
+            sudo docker container ls --all
             sudo docker container start postgres_bridge
