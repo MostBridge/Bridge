@@ -16,10 +16,5 @@ jobs:
           script: |
             sudo docker image ls
             sudo docker container ls --all
-            sudo docker image rm a0ba7004480f
-            sudo docker image rm 73a99bed4243
-            sudo docker image rm 14ac9a8d7fff
-            sudo docker image rm 9ade97530207
-            sudo docker image ls
-            sudo docker compose up -d
-                      
+            sudo docker image prune
+            sudo docker image ls 
