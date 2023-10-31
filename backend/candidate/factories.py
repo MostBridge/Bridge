@@ -1,3 +1,5 @@
+from random import randint
+
 import factory
 
 from django.utils import timezone
@@ -23,6 +25,7 @@ HIGH_LIMIT = 50
 MIN_POST_GEN = 2
 MAX_POST_GEN_TECH = 6
 MAX_POST_GEN_EMP = 4
+
 
 class Provider(BaseProvider):
     """Provider для создания данных."""
@@ -143,7 +146,6 @@ class CandidateFactory(DjangoModelFactory):
         if size <= Employment.objects.count():
             for emp in range(1, size):
                 self.employment.add(Employment.objects.get(pk=emp))
-
 
     @factory.post_generation
     def technology(self, create, extracted, **kwargs):
