@@ -89,7 +89,9 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
         candidate = self.get_object()
         if not current_user.viewed.filter(candidate=candidate).exists():
             View.objects.create(candidate=candidate, user=self.request.user)
-        serializer = CandidateSerializer(candidate)
+        serializer = CandidateSerializer(
+            candidate, context={"request": request}
+        )
         return Response(serializer.data)
 
     @action(
