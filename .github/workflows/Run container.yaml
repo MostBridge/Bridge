@@ -15,4 +15,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo docker image ls
-            sudo docker container ls --all                   
+            sudo docker container ls --all
+            sudo dockerdocker container restart darkdace-nginx-1
+            sudo docker container ls --all
