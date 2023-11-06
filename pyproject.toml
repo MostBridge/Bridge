@@ -20,6 +20,7 @@ pillow = "^10.1.0"
 drf-extra-fields = "^3.7.0"
 django-filter = "^23.3"
 django-cors-headers = "^4.3.0"
+vercel = "^0.2.1"
 
 
 

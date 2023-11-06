@@ -2,6 +2,7 @@ name: Push Docker image to Docker Hub and deploy workflow
 
 on:
   push:
+    types: [closed]
     branches: [main]
 
 jobs:
