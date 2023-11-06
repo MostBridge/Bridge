@@ -15,7 +15,7 @@ DEFAULT = "some_default_key"
 
 SECRET_KEY = env.str("SECRET_KEY", default=DEFAULT)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['*', "bridge-henna.vercel.app"])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*", ".vercel.app", ".now.sh"])
 
 DEFAULT_APPS = [
     "django.contrib.admin",
