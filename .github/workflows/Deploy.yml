@@ -2,7 +2,6 @@ name: Push Docker image to Docker Hub and deploy workflow
 
 on:
   push:
-    types: [closed]
     branches: [main]
 
 jobs:
@@ -68,7 +67,8 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
+          # key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo systemctl stop nginx
             sudo docker compose stop
