@@ -1583,20 +1583,6 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
-name = "vercel"
-version = "0.2.1"
-description = "Vercel SDK"
-optional = false
-python-versions = ">=3.7,<4.0"
-files = [
-    {file = "vercel-0.2.1-py3-none-any.whl", hash = "sha256:dc7de7c73df76bbb8e7c30131125997a8aa74e126183d53e7dbd6e76931d42b6"},
-    {file = "vercel-0.2.1.tar.gz", hash = "sha256:053d634ac542b59af102251a5135a1654a74a8f5a37c6c97da61171202b60021"},
-]
-
-[package.dependencies]
-requests = ">=2.24.0,<3.0.0"
-
-[[package]]
 name = "virtualenv"
 version = "20.24.6"
 description = "Virtual Python Environment builder"
@@ -1619,4 +1605,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d5762777d9a0ac798a74f7e0fed7ace74f680c32594edda15f9fc8bcb9bbc269"
+content-hash = "4f8b2a73bc3e9fefaf86160d26cdd9c42a4c4a22b2af6cbbe5ede68470fdd2d7"
