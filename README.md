@@ -28,8 +28,16 @@ Bridge service for the Yandex Practicum, Career Tracker
 
 # 2. Cсылка на веб хостинг <a id="host"></a>
 
-[Сервис Bridge](http://bridge.sytes.net)
-[Swagger](http://bridge.sytes.net/api/v1/swagger/)
+[Сервис Bridge](http://212.109.192.63/sign-in)
+- Email: 
+```shell
+hr@example.com
+```
+Password:
+```shell
+hr_password
+```
+- [Swagger](http://212.109.192.63/api/v1/swagger)
 
 # 3. Подготовка к запуску <a id="start"></a>
 
