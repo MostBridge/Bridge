@@ -37,7 +37,7 @@ Password:
 ```shell
 hr_password
 ```
-- [Swagger](http://212.109.192.63/api/v1/swagger)
+[Swagger](http://212.109.192.63/api/v1/swagger)
 
 # 3. Подготовка к запуску <a id="start"></a>
 
